@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity MCQ Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .quiz-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 400px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .question {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+        .option {
+            background-color: #f2f2f2;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .option:hover {
+            background-color: #e0e0e0;
+        }
+        .correct {
+            background-color: green;
+            color: white;
+        }
+        .wrong {
+            background-color: red;
+            color: white;
+        }
+        .next-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .next-btn:hover {
+            background-color: #45a049;
+        }
+        .final-score {
+            text-align: center;
+            font-size: 22px;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="question" id="question-text"></div>
+        <ul class="options" id="options-list"></ul>
+        <button id="next-btn" class="next-btn" style="display:none;">Next Question</button>
+        <div id="final-score" class="final-score" style="display:none;"></div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "In cloud computing, what does SaaS stand for?",
+                options: [
+                    "Software as a Service",
+                    "Storage as a Service",
+                    "System as a Service",
+                    "Security as a Service"
+                ],
+                correct: "Software as a Service"
+            },
+            {
+                question: "Which of the following is not a cybercrime?",
+                options: [
+                    "Denial of Service",
+                    "Man in the Middle",
+                    "Malware",
+                    "AES (Advanced Encryption Standard)"
+                ],
+                correct: "AES (Advanced Encryption Standard)"
+            },
+            {
+                question: "What type of cloud deployment model involves sharing computing resources among multiple organizations?",
+                options: [
+                    "Public cloud",
+                    "Private cloud",
+                    "Hybrid cloud",
+                    "Community cloud"
+                ],
+                correct: "Community cloud"
+            },
+            {
+                question: "Which of the following act violates cyber security?",
+                options: [
+                    "Exploit",
+                    "Attack",
+                    "Threat",
+                    "Vulnerability"
+                ],
+                correct: "Attack"
+            },
+            {
+                question: "Which networking device operates at the data link layer of the OSI model?",
+                options: [
+                    "Hub",
+                    "Router",
+                    "Switch",
+                    "Firewall"
+                ],
+                correct: "Switch"
+            },
+            {
+                question: "Which of the following is considered as the unsolicited commercial email?",
+                options: [
+                    "Virus",
+                    "Malware",
+                    "Spam",
+                    "All of the above"
+                ],
+                correct: "Spam"
+            },
+            {
+                question: "_______ is a type of software designed to help the user's computer detect viruses and avoid them.",
+                options: [
+                    "Malware",
+                    "Adware",
+                    "Antivirus",
+                    "Both B and C"
+                ],
+                correct: "Antivirus"
+            },
+            {
+                question: "_ are the special type of programs used for recording and tracking user's keystroke.",
+                options: [
+                    "Key logger",
+                    "Trojans",
+                    "Virus",
+                    "Worms"
+                ],
+                correct: "Key logger"
+            },
+            {
+                question: "Which of the following is a preventive measure against Cyber Attacks?",
+                options: [
+                    "Ignoring software updates",
+                    "Using strong passwords and enabling multi-factor authentication",
+                    "Clicking on unknown links",
+                    "Sharing passwords with others"
+                ],
+                correct: "Using strong passwords and enabling multi-factor authentication"
+            },
+            {
+                question: "What type of attack relies on the trusting nature of employees and the art of deception?",
+                options: [
+                    "Social engineering",
+                    "Fraud",
+                    "Phishing",
+                    "Dumpster diving"
+                ],
+                correct: "Social engineering"
+            },
+            {
+                question: "What is the primary purpose of the law of armed conflict?",
+                options: [
+                    "To encourage the use of nuclear weapons",
+                    "To ensure total destruction of enemies",
+                    "To justify war",
+                    "To limit the effects of armed conflict"
+                ],
+                correct: "To limit the effects of armed conflict"
+            },
+            {
+                question: "The American Bar Association (ABA) primarily focuses on:",
+                options: [
+                    "Legal education, professional standards, and the justice system",
+                    "Medical research and healthcare policies",
+                    "Cybersecurity frameworks and national defense strategies",
+                    "Environmental regulations and climate change"
+                ],
+                correct: "Legal education, professional standards, and the justice system"
+            },
+            {
+                question: "_ is a document that states in writing how a company plans to protect the company's physical and IT assets.",
+                options: [
+                    "Data encryption standard",
+                    "Security policy",
+                    "Public key certificate",
+                    "Access control list"
+                ],
+                correct: "Security policy"
+            },
+            {
+                question: "The Electronic Communications Privacy Act (ECPA) protects which of the following?",
+                options: [
+                    "Phone and electronic communications from unauthorized interception",
+                    "Physical mail delivery",
+                    "Public speeches",
+                    "Copyrighted books"
+                ],
+                correct: "Phone and electronic communications from unauthorized interception"
+            },
+            {
+                question: "Which type of attack involves flooding a network or server with excessive traffic to make it unavailable?",
+                options: [
+                    "Spoofing attack",
+                    "Phishing attack",
+                    "DDoS (Distributed Denial of Service) attack",
+                    "SQL injection attack"
+                ],
+                correct: "DDoS (Distributed Denial of Service) attack"
+            },
+            {
+                question: "The term 'material support' in U.S. law generally refers to aiding which of the following?",
+                options: [
+                    "Charitable organizations",
+                    "Terrorist organizations",
+                    "Government officials",
+                    "Military veterans"
+                ],
+                correct: "Terrorist organizations"
+            },
+            {
+                question: "What does the term 'zero-day vulnerability' refer to?",
+                options: [
+                    "A software bug that has been present for zero days",
+                    "A vulnerability that has not yet been discovered or patched",
+                    "A type of malware with zero detection rate",
+                    "A security feature with zero effectiveness"
+                ],
+                correct: "A vulnerability that has not yet been discovered or patched"
+            },
+            {
+                question: "The Commerce Clause allows the federal government to regulate:",
+                options: [
+                    "Local crime exclusively",
+                    "Social media regulations",
+                    "Interstate and international commerce",
+                    "State educational policies"
+                ],
+                correct: "Interstate and international commerce"
+            },
+            {
+                question: "What is the primary goal of cyber warfare?",
+                options: [
+                    "Economic sabotage",
+                    "Political destabilization",
+                    "Information manipulation",
+                    "All of the above"
+                ],
+                correct: "All of the above"
+            },
+            {
+                question: "Which of the following is a common penalty under the Computer Fraud & Abuse Act?",
+                options: [
+                    "Life imprisonment",
+                    "Fines and imprisonment up to 10 years",
+                    "Community service only",
+                    "House arrest for one month"
+                ],
+                correct: "Fines and imprisonment up to 10 years"
+            },
+            {
+                question: "What is a tort in law?",
+                options: [
+                    "A criminal offense",
+                    "A wrongful act causing harm to another",
+                    "A government regulation",
+                    "A type of contract"
+                ],
+                correct: "A wrongful act causing harm to another"
+            },
+            {
+                question: "Which of the following can be considered data theft?",
+                options: [
+                    "Accessing a public website",
+                    "Sending an email to a friend",
+                    "Deleting your personal files",
+                    "Hacking into a company’s database to steal customer information"
+                ],
+                correct: "Hacking into a company’s database to steal customer information"
+            },
+            {
+                question: "What is the main objective of cyber terrorism?",
+                options: [
+                    "Financial gain",
+                    "Ideological influence",
+                    "Corporate espionage",
+                    "Social engineering"
+                ],
+                correct: "Ideological influence"
+            },
+            {
+                question: "Which of the following is an example of intellectual property?",
+                options: [
+                    "A company logo",
+                    "A stolen credit card",
+                    "A personal diary",
+                    "A house"
+                ],
+                correct: "A company logo"
+            },
+            {
+                question: "Which law protects the rights of inventors?",
+                options: [
+                    "Copyright law",
+                    "Patent law",
+                    "Criminal law",
+                    "Tax law"
+                ],
+                correct: "Patent law"
+            },
+            {
+                question: "What is the role of the private sector in securing cyberspace?",
+                options: [
+                    "To develop government regulations",
+                    "To create security policies for the public sector",
+                    "To collaborate with the government in cybersecurity efforts",
+                    "To control internet traffic"
+                ],
+                correct: "To collaborate with the government in cybersecurity efforts"
+            },
+            {
+                question: "NSTIC stands for:",
+                options: [
+                    "National Secure Technology Infrastructure Center",
+                    "National Strategy for Trusted Identities in Cyberspace",
+                    "National Software Technology Innovation Center",
+                    "National Security Technology Integration Consortium"
+                ],
+                correct: "National Strategy for Trusted Identities in Cyberspace"
+            },
+            {
+                question: "What are 'walls' in the context of cybersecurity?",
+                options: [
+                    "Barriers preventing access to the internet",
+                    "Cybersecurity regulations",
+                    "Firewalls on computer systems",
+                    "Defensive measures within cyberspace to prevent attacks"
+                ],
+                correct: "Defensive measures within cyberspace to prevent attacks"
+            },
+            {
+                question: "What does 'stovepipes' refer to in cybersecurity?",
+                options: [
+                    "Single-layer cybersecurity systems",
+                    "Multi-layered security systems",
+                    "Communication barriers and isolated operations within organizations",
+                    "Firewalls with restricted access"
+                ],
+                correct: "Communication barriers and isolated operations within organizations"
+            },
+            {
+                question: "Which of the following is a method used to protect data confidentiality?",
+                options: [
+                    "Encryption",
+                    "Data segmentation",
+                    "Data cleansing",
+                    "Data mining"
+                ],
+                correct: "Encryption"
+            },
+            {
+                question: "What does VPN stand for?",
+                options: [
+                    "Variable Protection Network",
+                    "Virtual Private Network",
+                    "Virtual Public Network",
+                    "Value Processing Network"
+                ],
+                correct: "Virtual Private Network"
+            },
+            {
+                question: "Which of the following is an example of a physical security control?",
+                options: [
+                    "Encryption",
+                    "Firewalls",
+                    "Biometric authentication",
+                    "User access management"
+                ],
+                correct: "Biometric authentication"
+            },
+            {
+                question: "What is the purpose of penetration testing in cybersecurity?",
+                options: [
+                    "To exploit vulnerabilities before attackers do",
+                    "To improve software performance",
+                    "To store sensitive data",
+                    "To test network speeds"
+                ],
+                correct: "To exploit vulnerabilities before attackers do"
+            },
+            {
+                question: "Which of the following is a tool used for monitoring and defending against cyber threats?",
+                options: [
+                    "Antivirus",
+                    "Firewall",
+                    "IDS (Intrusion Detection System)",
+                    "All of the above"
+                ],
+                correct: "All of the above"
+            },
+            {
+                question: "Which of the following can be considered an effective cybersecurity strategy?",
+                options: [
+                    "Ignoring new threats",
+                    "Continuous monitoring and updating defenses",
+                    "Restricting access to one device",
+                    "Focusing on one specific type of attack"
+                ],
+                correct: "Continuous monitoring and updating defenses"
+            },
+            {
+                question: "The Federal Trade Commission (FTC) focuses on:",
+                options: [
+                    "Cybersecurity regulations",
+                    "Consumer protection",
+                    "Military defense",
+                    "Environmental protection"
+                ],
+                correct: "Consumer protection"
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const question = questions[currentQuestionIndex];
+            document.getElementById("question-text").textContent = question.question;
+            const optionsList = document.getElementById("options-list");
+            optionsList.innerHTML = '';
+
+            question.options.forEach(option => {
+                const li = document.createElement("li");
+                li.textContent = option;
+                li.classList.add("option");
+                li.addEventListener("click", () => checkAnswer(option));
+                optionsList.appendChild(li);
+            });
+            document.getElementById("next-btn").style.display = 'none';
+        }
+
+        function checkAnswer(selectedOption) {
+            const question = questions[currentQuestionIndex];
+            const optionsList = document.getElementById("options-list");
+            const allOptions = optionsList.getElementsByTagName("li");
+            
+            for (let i = 0; i < allOptions.length; i++) {
+                const option = allOptions[i];
+                if (option.textContent === question.correct) {
+                    option.classList.add("correct");
+                }
+                if (option.textContent === selectedOption && selectedOption !== question.correct) {
+                    option.classList.add("wrong");
+                }
+            }
+            if (selectedOption === question.correct) {
+                score++;
+            }
+            document.getElementById("next-btn").style.display = 'block';
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                document.getElementById("quiz-container").style.display = 'none';
+                document.getElementById("final-score").style.display = 'block';
+                document.getElementById("final-score").textContent = `Your final score is ${score} out of ${questions.length}!`;
+            }
+        }
+
+        document.getElementById("next-btn").addEventListener("click", nextQuestion);
+
+        loadQuestion();
+    </script>
+</body>
+</html>
